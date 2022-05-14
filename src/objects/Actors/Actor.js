@@ -11,5 +11,17 @@ export class Actor extends Drawable {
 
         this.xMaxSpeed = xMaxSpeed
         this.yMaxSpeed = yMaxSpeed
+
+        this.xSpeed = 0
+        this.ySpeed = 0
+    }
+
+    update() {
+        if (Math.abs(this.xSpeed) > this.xMaxSpeed) {
+            if (this.xSpeed > 0) this.xSpeed = this.xMaxSpeed
+            else if (this.xSpeed < 0) this.xSpeed = -this.xMaxSpeed
+        }
+        this.x += this.xSpeed
+        this.y += this.ySpeed
     }
 }

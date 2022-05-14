@@ -1,8 +1,6 @@
 import { canvas, ctx, stretchAndFillCanvas } from "./canvas.js"
-
-import './events.js'
-
 import { Player } from './objects/Actors/Player.js'
+import { initiateControlEventListeners } from "./controls.js"
 
 const player = new Player(
     0, 0,
@@ -11,8 +9,10 @@ const player = new Player(
     10, 10
 )
 
-stretchAndFillCanvas(canvas, ctx)
+initiateControlEventListeners()
 const animate = () => {
+    stretchAndFillCanvas(canvas, ctx)
+    player.update()
     player.draw(ctx)
     window.requestAnimationFrame(animate)
 }
