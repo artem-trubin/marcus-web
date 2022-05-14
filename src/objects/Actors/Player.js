@@ -1,14 +1,13 @@
 import { Actor } from "./Actor.js"
 
 import { actions } from "../../controls.js"
+import { TYPE_PLAYER, camera, SCREEN_SIZE } from "../../globals.js"
 
 export class Player extends Actor {
-    constructor(
-        x, y,
-        width, height,
-        color,
-    ) {
-        super(x, y, width, height, color, 10, 20)
+    constructor(x, y,) {
+        super(x, y, 50, 50, 'red', 10, 20)
+
+        this.types.push(TYPE_PLAYER)
     }
 
     update() {
@@ -28,7 +27,9 @@ export class Player extends Actor {
             this.airborne = true
         }
 
-
         super.update()
+
+        camera.x = Math.round(this.x - SCREEN_SIZE.w / 2 + this.w / 2)
+        camera.y = Math.round(this.y - SCREEN_SIZE.h / 2 + this.h / 2)
     }
 }

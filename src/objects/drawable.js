@@ -1,3 +1,5 @@
+import { camera } from "../globals.js"
+
 export class Drawable {
     constructor(
         x, y,
@@ -9,6 +11,7 @@ export class Drawable {
         this.w = height
         this.h = width
         this.color = color
+        this.types = []
     }
 
     get top() { return this.y }
@@ -32,6 +35,6 @@ export class Drawable {
 
     draw(ctx) {
         ctx.fillStyle = this.color
-        ctx.fillRect(this.x, this.y, this.w, this.h)
+        ctx.fillRect(this.x - camera.x, this.y - camera.y, this.w, this.h)
     }
 }

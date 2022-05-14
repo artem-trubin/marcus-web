@@ -1,33 +1,24 @@
-import { canvas, ctx, stretchAndFillCanvas } from "./canvas.js"
+import { canvas, ctx, stretchAndFillCanvas, initiateResizeEventListener } from "./canvas.js"
 import { Player } from './objects/Actors/Player.js'
 import { initiateControlEventListeners } from "./controls.js"
 import { Platform } from "./objects/Immovable/Platform.js"
-import { solidObjects } from "./globals.js"
+import { SCREEN_SIZE, solidObjects } from "./globals.js"
 
-const player = new Player(
-    0, 0,
-    50, 50,
-    'red',
-    10, 10
-)
+import { buildLvl, getActorObjects, testLvl } from "./systems/lvlBuilder.js"
 
-const platform1 = new Platform(
-    0, 300, 300, 50, 'yellow'
-)
-solidObjects.push(platform1)
 
-const platform2 = new Platform(
-    250, 250, 50, 50, 'green'
-)
-solidObjects.push(platform2)
+const lvlObjects = buildLvl(testLvl)
+const actors = getActorObjects(lvlObjects)
 
+SCREEN_SIZE.w = window.innerWidth
+SCREEN_SIZE.h = window.innerHeight
+
+initiateResizeEventListener()
 initiateControlEventListeners()
 const animate = () => {
     stretchAndFillCanvas(canvas, ctx)
-    player.update()
-    player.draw(ctx)
-    platform1.draw(ctx)
-    platform2.draw(ctx)
+    actors.forEach(obj => obj.update())
+    lvlObjects.forEach(obj => obj.draw(ctx))
     window.requestAnimationFrame(animate)
 }
 

@@ -1,4 +1,4 @@
-import { solidObjects } from '../../globals.js'
+import { solidObjects, TYPE_ACTOR } from '../../globals.js'
 import { colliding } from '../../utils.js'
 import { Drawable } from '../Drawable.js'
 
@@ -18,6 +18,8 @@ export class Actor extends Drawable {
         this.ySpeed = 0
 
         this.airborne = true
+
+        this.types.push(TYPE_ACTOR)
     }
 
     update() {
