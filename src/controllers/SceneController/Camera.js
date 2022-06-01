@@ -27,9 +27,6 @@ export class Camera {
       top: this.lvlBoundaries.top + this.yOffset,
       bottom: this.lvlBoundaries.bottom - this.yOffset,
     }
-
-    console.log(this.x, this.y)
-
   }
 
   moveCenter(newCenterX, newCenterY) {

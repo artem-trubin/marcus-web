@@ -35,7 +35,6 @@ export class Drawable {
     }
 
     draw(ctx, camera) {
-        // console.log(camera)
         ctx.fillStyle = this.color
         ctx.fillRect(this.x - camera.x, this.y - camera.y, this.w, this.h)
     }

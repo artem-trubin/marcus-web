@@ -27,8 +27,5 @@ export class Player extends Actor {
         }
 
         super.update()
-
-        // camera.x = Math.round(this.x - SCREEN_SIZE.w / 2 + this.w / 2)
-        // camera.y = Math.round(this.y - SCREEN_SIZE.h / 2 + this.h / 2)
     }
 }
