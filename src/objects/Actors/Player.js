@@ -1,5 +1,4 @@
 import { Actor } from "./Actor.js"
-
 import { actions } from "../../controls.js"
 import { TYPE_PLAYER, camera, SCREEN_SIZE } from "../../globals.js"
 
