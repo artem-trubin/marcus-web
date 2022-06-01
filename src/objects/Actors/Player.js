@@ -3,8 +3,8 @@ import { actions } from "../../controls.js"
 import { TYPE_PLAYER, camera, SCREEN_SIZE } from "../../globals.js"
 
 export class Player extends Actor {
-    constructor(x, y,) {
-        super(x, y, 50, 50, 'red', 10, 30)
+    constructor(x, y) {
+        super(x, y, 50, 50, 'red', 10, 25)
 
         this.types.push(TYPE_PLAYER)
     }
@@ -22,7 +22,7 @@ export class Player extends Actor {
         }
 
         if (actions.jump && !this.airborne) {
-            this.ySpeed = -30
+            this.ySpeed = -25
             this.airborne = true
         }
 
