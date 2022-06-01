@@ -1,3 +1,5 @@
+import { eventJump } from "./controllers/EventController/EventController.js"
+
 export const actions = {
     moveLeft: false,
     moveRight: false,
@@ -9,7 +11,8 @@ export function initiateControlEventListeners() {
         const c = e.code
 
         if (c === "Space" || c === "KeyW" || c === "ArrowUp")
-            actions.jump = true
+            // actions.jump = true
+            window.dispatchEvent(eventJump)
 
         if (c === "KeyA" || c === "ArrowLeft")
             actions.moveLeft = true
