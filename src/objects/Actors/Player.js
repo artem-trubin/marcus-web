@@ -1,6 +1,6 @@
 import { Actor } from "./Actor.js"
 import { actions } from "../../controls.js"
-import { TYPE_PLAYER, camera, SCREEN_SIZE } from "../../globals.js"
+import { TYPE_PLAYER } from "../../globals.js"
 import { event_jump } from "../../controllers/EventController/EventController.js"
 
 export class Player extends Actor {
@@ -20,7 +20,7 @@ export class Player extends Actor {
         })
     }
 
-    update() {
+    update(scene) {
         if (actions.moveLeft) this.xSpeed -= 1
         if (actions.moveRight) this.xSpeed += 1
 
@@ -34,6 +34,6 @@ export class Player extends Actor {
 
         if (!this.airborne) this.doubleJump = true
 
-        super.update()
+        super.update(scene)
     }
 }

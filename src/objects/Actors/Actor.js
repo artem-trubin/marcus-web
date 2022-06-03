@@ -1,6 +1,7 @@
-import { solidObjects, TYPE_ACTOR } from '../../globals.js'
+import { TYPE_ACTOR } from '../../globals.js'
 import { colliding } from '../../utils.js'
 import { Drawable } from '../Drawable.js'
+import { triggerEventCoinTouched } from '../../controllers/EventController/EventController.js'
 
 export class Actor extends Drawable {
     constructor(
@@ -22,7 +23,7 @@ export class Actor extends Drawable {
         this.types.push(TYPE_ACTOR)
     }
 
-    update() {
+    update(scene) {
         let collidingObjects = []
 
         if (Math.abs(this.xSpeed) > this.xMaxSpeed) {
@@ -38,7 +39,7 @@ export class Actor extends Drawable {
 
         this.x += this.xSpeed
 
-        collidingObjects = solidObjects.filter(obj => colliding(this, obj))
+        collidingObjects = scene.solidObjects.filter(obj => colliding(this, obj))
         collidingObjects.forEach(obj => {
             if (this.xSpeed > 0 && this.right > obj.left) {
                 this.xSpeed = 0
@@ -49,9 +50,15 @@ export class Actor extends Drawable {
             }
         })
 
+        collidingObjects = scene.interactives.filter(obj => colliding(this, obj))
+        collidingObjects.forEach(obj => {
+            console.log(obj.id)
+            triggerEventCoinTouched(obj.id)
+        })
+
         this.y += this.ySpeed
 
-        collidingObjects = solidObjects.filter(obj => colliding(this, obj))
+        collidingObjects = scene.solidObjects.filter(obj => colliding(this, obj))
         collidingObjects.forEach(obj => {
             if (this.ySpeed > 0 && this.bottom > obj.top) {
                 this.ySpeed = 0

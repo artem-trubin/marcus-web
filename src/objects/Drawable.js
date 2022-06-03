@@ -1,3 +1,5 @@
+import { generateId } from "../../common.js"
+
 export class Drawable {
     constructor(
         x, y,
@@ -10,6 +12,7 @@ export class Drawable {
         this.h = w
         this.color = color
         this.types = []
+        this.id = generateId()
     }
 
     get top() { return this.y }

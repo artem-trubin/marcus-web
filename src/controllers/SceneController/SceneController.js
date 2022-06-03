@@ -1,7 +1,10 @@
-import { TYPE_PLAYER, TYPE_SOLID, TYPE_ACTOR } from "../../globals.js"
-import { buildLvl } from "./lvlBuilder.js"
+import { TYPE_PLAYER, TYPE_SOLID, TYPE_ACTOR, TYPE_INTERACTIVE } from "../../globals.js"
 import { Camera } from "./Camera.js"
 import { TILE_SIZE } from "../../projectsSettings.js"
+import { Platform } from "../../objects/Immovable/Platform.js"
+import { Player } from "../../objects/Actors/Player.js"
+import { Coin } from "../../objects/Interactive/Coin.js"
+import { addCoinTouchedEventReciever } from "../EventController/EventController.js"
 
 export class SceneController {
   constructor(
@@ -15,6 +18,7 @@ export class SceneController {
     this.player = null
     this.solidObjects = []
     this.actors = []
+    this.interactives = []
 
     this.buildLvl()
     this.lvlBoundaries = {
@@ -33,13 +37,22 @@ export class SceneController {
       screenW,
       screenH
     )
+
+    addCoinTouchedEventReciever((id) => {
+      this.removeObject(id)
+    })
   }
 
   buildLvl() {
-    this.objects = buildLvl(this.lvlSchema)
+    this.createObjects(this.lvlSchema)
+    this.updateObjectLists()
+  }
+
+  updateObjectLists() {
     this.player = this.getPlayerObject(this.objects)
     this.solidObjects = this.getSolidObjects(this.objects)
     this.actors = this.getActorObjects(this.objects)
+    this.interactives = this.getInteractiveObjects(this.objects)
   }
 
   getPlayerObject(objects) {
@@ -54,7 +67,48 @@ export class SceneController {
     return objects.filter(obj => obj.types.includes(TYPE_ACTOR))
   }
 
+  getInteractiveObjects(objects) {
+    return objects.filter(obj => obj.types.includes(TYPE_INTERACTIVE))
+  }
+
+  removeObject(id) {
+    this.objects = this.objects.filter(obj => obj.id !== id)
+    this.updateObjectLists()
+  }
+
   updateCamera() {
     this.camera.moveCenter(this.player.centerX, this.player.centerY)
+  }
+
+  createObjects(lvlSchema) {
+    lvlSchema.forEach((row, y) => {
+      row.forEach((block, x) => {
+        switch (block) {
+          case "B":
+            const platform = new Platform(
+              x * TILE_SIZE,
+              y * TILE_SIZE,
+              TILE_SIZE,
+              TILE_SIZE,
+              "green",
+            )
+            this.objects.push(platform)
+            this.solidObjects.push(platform)
+            break
+          case "P":
+            this.objects.push(new Player(
+              x * TILE_SIZE,
+              y * TILE_SIZE,
+            ))
+            break
+          case "C":
+            this.objects.push(new Coin(
+              x * TILE_SIZE,
+              y * TILE_SIZE,
+            ))
+            break
+        }
+      })
+    })
   }
 }

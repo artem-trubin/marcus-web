@@ -12,7 +12,7 @@ initiateResizeEventListener()
 initiateControlEventListeners()
 const animate = () => {
     stretchAndFillCanvas(canvas, ctx)
-    scene.actors.forEach(obj => obj.update())
+    scene.actors.forEach(obj => obj.update(scene))
     scene.objects.forEach(obj => obj.draw(ctx, scene.camera))
     scene.camera.moveCenter(scene.player.centerX, scene.player.centerY)
     window.requestAnimationFrame(animate)
