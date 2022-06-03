@@ -11,6 +11,7 @@ const scene = new SceneController(testLvl, SCREEN_SIZE.w, SCREEN_SIZE.h)
 initiateResizeEventListener()
 initiateControlEventListeners()
 const animate = () => {
+    scene.winConditionCheck()
     stretchAndFillCanvas(canvas, ctx)
     scene.actors.forEach(obj => obj.update(scene))
     scene.objects.forEach(obj => obj.draw(ctx, scene.camera))

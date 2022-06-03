@@ -20,6 +20,8 @@ export class SceneController {
     this.actors = []
     this.interactives = []
 
+    this.goalReached = false
+
     this.buildLvl()
     this.lvlBoundaries = {
       left: 0,
@@ -41,6 +43,13 @@ export class SceneController {
     addCoinTouchedEventReciever((id) => {
       this.removeObject(id)
     })
+  }
+
+  winConditionCheck() {
+    if (this.interactives.length === 0 && !this.goalReached) {
+      this.goalReached = true
+      alert("You've collected all coins! Well done!")
+    }
   }
 
   buildLvl() {
