@@ -1,14 +1,18 @@
 import { Actor } from "./Actor.js"
 import { actions } from "../../controls.js"
-import { TYPE_PLAYER } from "../../globals.js"
-import { addEnemyDeathReceiver, addPlayerDamageReceiver, event_jump } from "../../controllers/EventController/EventController.js"
+import { TYPE_ADD_GRAVITY, TYPE_BY_STOMP, TYPE_PLAYER, TYPE_RIGID } from "../../globals.js"
+import { addEnemyDeathReceiver, addPlayerDamageReceiver, event_fireball, event_jump } from "../../controllers/EventController/EventController.js"
+import { Fireball } from "../Projectiles/Fireball.js"
 
 export class Player extends Actor {
-    constructor(x, y) {
+    constructor(x, y, scene) {
         super(x, y, 50, 50, 'red', 10, 25)
 
         this.types.push(TYPE_PLAYER)
+        this.types.push(TYPE_ADD_GRAVITY)
+        this.types.push(TYPE_RIGID)
         this.doubleJump = true
+        this.xDirection = 0
         window.addEventListener(event_jump, () => {
             if (!this.airborne) {
                 this.ySpeed = -25
@@ -19,15 +23,26 @@ export class Player extends Actor {
             }
         })
 
+        window.addEventListener(event_fireball, () => {
+            const fireball = new Fireball(this.x, this.y, this.xDirection, 0)
+            scene.addProjectile(fireball)
+        })
+
         addPlayerDamageReceiver(() => { console.log("Damaged") })
-        addEnemyDeathReceiver(() => {
-            this.ySpeed = -20
+        addEnemyDeathReceiver((_, type) => {
+            if (type === TYPE_BY_STOMP) this.ySpeed = -20
         })
     }
 
     update(scene) {
-        if (actions.moveLeft) this.xSpeed -= 1
-        if (actions.moveRight) this.xSpeed += 1
+        if (actions.moveLeft) {
+            this.xSpeed -= 1
+            this.xDirection = -1
+        }
+        if (actions.moveRight) {
+            this.xSpeed += 1
+            this.xDirection = 1
+        }
 
         if (
             !(actions.moveRight || actions.moveLeft)

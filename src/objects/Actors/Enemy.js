@@ -1,4 +1,4 @@
-import { TYPE_ENEMY } from '../../globals.js'
+import { TYPE_ADD_GRAVITY, TYPE_ENEMY, TYPE_RIGID } from '../../globals.js'
 import { Actor } from './Actor.js'
 
 export class Enemy extends Actor {
@@ -8,6 +8,8 @@ export class Enemy extends Actor {
     this.xSpeed = this.speed
     this.direction = direction
     this.types.push(TYPE_ENEMY)
+    this.types.push(TYPE_ADD_GRAVITY)
+    this.types.push(TYPE_RIGID)
   }
 
   update(scene) {

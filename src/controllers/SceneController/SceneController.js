@@ -4,9 +4,10 @@ import { TILE_SIZE } from "../../projectsSettings.js"
 import { Platform } from "../../objects/Solid/Platform.js"
 import { Player } from "../../objects/Actors/Player.js"
 import { Coin } from "../../objects/Interactive/Coin.js"
-import { addCoinTouchedEventReceiver, addEnemyDeathReceiver } from "../EventController/EventController.js"
+import { addCoinTouchedEventReceiver, addDestroyProjectileReceiver, addEnemyDeathReceiver } from "../EventController/EventController.js"
 import { UIController } from "../../ui/UIController.js"
 import { Enemy } from "../../objects/Actors/Enemy.js"
+import { Projectile } from "../../objects/Projectiles/Projectile.js"
 
 export class SceneController {
   constructor(
@@ -50,6 +51,10 @@ export class SceneController {
     })
 
     addEnemyDeathReceiver((id) => {
+      this.removeObject(id)
+    })
+
+    addDestroyProjectileReceiver((id) => {
       this.removeObject(id)
     })
 
@@ -105,6 +110,11 @@ export class SceneController {
     this.camera.moveCenter(this.player.centerX, this.player.centerY)
   }
 
+  addProjectile(projectile) {
+    this.objects.push(projectile)
+    this.updateObjectLists()
+  }
+
   createObjects(lvlSchema) {
     lvlSchema.forEach((row, y) => {
       row.forEach((block, x) => {
@@ -124,6 +134,7 @@ export class SceneController {
             this.objects.push(new Player(
               x * TILE_SIZE,
               y * TILE_SIZE,
+              this
             ))
             break
           case "C":

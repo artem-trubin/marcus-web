@@ -1,4 +1,4 @@
-import { eventJump } from "./controllers/EventController/EventController.js"
+import { eventFireball, eventJump } from "./controllers/EventController/EventController.js"
 
 export const actions = {
     moveLeft: false,
@@ -19,6 +19,9 @@ export function initiateControlEventListeners() {
 
         if (c === "KeyD" || c === "ArrowRight")
             actions.moveRight = true
+
+        if (c === "KeyS" || c === "ArrowDown")
+            window.dispatchEvent(eventFireball)
     })
 
     window.addEventListener('keyup', (e) => {

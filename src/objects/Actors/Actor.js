@@ -1,7 +1,7 @@
-import { TYPE_ACTOR, TYPE_PLAYER } from '../../globals.js'
+import { TYPE_ACTOR, TYPE_ADD_GRAVITY, TYPE_BY_STOMP, TYPE_COIN, TYPE_FIREBALL, TYPE_PLAYER, TYPE_RIGID, TYPE_BY_FIREBALL } from '../../globals.js'
 import { colliding } from '../../utils.js'
 import { GameObject } from '../GameObject.js'
-import { triggerEnemyDeath, triggerEventCoinTouched, triggerEventPlayerDamage } from '../../controllers/EventController/EventController.js'
+import { triggerDestroyProjectile, triggerEnemyDeath, triggerEventCoinTouched, triggerEventPlayerDamage } from '../../controllers/EventController/EventController.js'
 
 export class Actor extends GameObject {
     constructor(
@@ -31,7 +31,8 @@ export class Actor extends GameObject {
             else if (this.xSpeed < 0) this.xSpeed = -this.xMaxSpeed
         }
 
-        this.ySpeed += 1
+        if (this.types.includes(TYPE_ADD_GRAVITY))
+            this.ySpeed += 1
 
         if (Math.abs(this.ySpeed) > this.yMaxSpeed) {
             this.ySpeed = this.yMaxSpeed
@@ -39,19 +40,28 @@ export class Actor extends GameObject {
 
         this.x += this.xSpeed
 
-        collidingObjects = scene.solidObjects.filter(obj => colliding(this, obj))
-        collidingObjects.forEach(obj => {
-            if (this.xSpeed > 0 && this.right > obj.left) {
-                this.xSpeed = 0
-                this.right = obj.left
-            } else if (this.xSpeed < 0 && this.left < obj.right) {
-                this.xSpeed = 0
-                this.left = obj.right
-            }
-        })
+        if (this.types.includes(TYPE_RIGID)) {
+            collidingObjects = scene.solidObjects.filter(obj => colliding(this, obj))
+            collidingObjects.forEach(obj => {
+                if (this.types.includes(TYPE_FIREBALL)) {
+                    triggerDestroyProjectile(this.id)
+                } else {
+                    if (this.xSpeed > 0 && this.right > obj.left) {
+                        this.xSpeed = 0
+                        this.right = obj.left
+                    } else if (this.xSpeed < 0 && this.left < obj.right) {
+                        this.xSpeed = 0
+                        this.left = obj.right
+                    }
+                }
+            })
+        }
 
         collidingObjects = scene.interactives.filter(obj => colliding(this, obj))
-        collidingObjects.forEach(obj => triggerEventCoinTouched(obj.id))
+        collidingObjects.forEach(obj => {
+            if (this.types.includes(TYPE_PLAYER) && obj.types.includes(TYPE_COIN))
+                triggerEventCoinTouched(obj.id)
+        })
 
         this.y += this.ySpeed
 
@@ -60,23 +70,37 @@ export class Actor extends GameObject {
             collidingObjects.forEach(obj => triggerEventPlayerDamage())
         }
 
-        collidingObjects = scene.solidObjects.filter(obj => colliding(this, obj))
-        collidingObjects.forEach(obj => {
-            if (this.ySpeed > 0 && this.bottom > obj.top) {
-                this.ySpeed = 0
-                this.bottom = obj.top
-                this.airborne = false
-            } else if (this.ySpeed < 0 && this.top < obj.bottom) {
-                this.ySpeed = 0
-                this.top = obj.bottom
-            }
-        })
+        if (this.types.includes(TYPE_RIGID)) {
+            collidingObjects = scene.solidObjects.filter(obj => colliding(this, obj))
+            collidingObjects.forEach(obj => {
+                if (this.types.includes(TYPE_FIREBALL)) {
+                    triggerDestroyProjectile(this.id)
+                } else {
+                    if (this.ySpeed > 0 && this.bottom > obj.top) {
+                        this.ySpeed = 0
+                        this.bottom = obj.top
+                        this.airborne = false
+                    } else if (this.ySpeed < 0 && this.top < obj.bottom) {
+                        this.ySpeed = 0
+                        this.top = obj.bottom
+                    }
+                }
+            })
+        }
         if (this.types.includes(TYPE_PLAYER)) {
             collidingObjects = scene.enemies.filter(obj => colliding(this, obj))
             collidingObjects.forEach(obj => {
                 if (obj.bottom > this.bottom) {
-                    triggerEnemyDeath(obj.id)
+                    triggerEnemyDeath(obj.id, TYPE_BY_STOMP)
                 }
+            })
+        }
+
+        if (this.types.includes(TYPE_FIREBALL)) {
+            collidingObjects = scene.enemies.filter(obj => colliding(this, obj))
+            collidingObjects.forEach(obj => {
+                triggerEnemyDeath(obj.id, TYPE_BY_FIREBALL)
+                triggerDestroyProjectile(this.id)
             })
         }
     }
