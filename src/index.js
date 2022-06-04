@@ -16,6 +16,7 @@ const animate = () => {
     scene.actors.forEach(obj => obj.update(scene))
     scene.objects.forEach(obj => obj.draw(ctx, scene.camera))
     scene.camera.moveCenter(scene.player.centerX, scene.player.centerY)
+    scene.ui.draw(ctx, scene)
     window.requestAnimationFrame(animate)
 }
 

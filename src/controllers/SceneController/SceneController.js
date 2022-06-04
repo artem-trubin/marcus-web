@@ -5,6 +5,7 @@ import { Platform } from "../../objects/Solid/Platform.js"
 import { Player } from "../../objects/Actors/Player.js"
 import { Coin } from "../../objects/Interactive/Coin.js"
 import { addCoinTouchedEventReciever } from "../EventController/EventController.js"
+import { UIController } from "../../ui/UIController.js"
 
 export class SceneController {
   constructor(
@@ -19,6 +20,7 @@ export class SceneController {
     this.solidObjects = []
     this.actors = []
     this.interactives = []
+    this.collectedCoins = 0
 
     this.goalReached = false
 
@@ -42,7 +44,10 @@ export class SceneController {
 
     addCoinTouchedEventReciever((id) => {
       this.removeObject(id)
+      this.collectedCoins++
     })
+
+    this.ui = new UIController()
   }
 
   winConditionCheck() {
