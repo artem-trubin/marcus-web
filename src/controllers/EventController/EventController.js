@@ -32,7 +32,7 @@ export function triggerEnemyDeath(id, type) {
 }
 export function addEnemyDeathReceiver(cb) {
   window.addEventListener(event_enemy_death, ({ detail }) => {
-    cb(detail.id)
+    cb(detail.id, detail.type)
   })
 }
 

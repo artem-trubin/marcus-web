@@ -31,6 +31,7 @@ export class Player extends Actor {
         addPlayerDamageReceiver(() => { console.log("Damaged") })
         addEnemyDeathReceiver((_, type) => {
             if (type === TYPE_BY_STOMP) this.ySpeed = -20
+            console.log(type)
         })
     }
 
