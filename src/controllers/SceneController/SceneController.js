@@ -1,11 +1,12 @@
-import { TYPE_PLAYER, TYPE_SOLID, TYPE_ACTOR, TYPE_INTERACTIVE } from "../../globals.js"
+import { TYPE_PLAYER, TYPE_SOLID, TYPE_ACTOR, TYPE_INTERACTIVE, TYPE_ENEMY } from "../../globals.js"
 import { Camera } from "./Camera.js"
 import { TILE_SIZE } from "../../projectsSettings.js"
 import { Platform } from "../../objects/Solid/Platform.js"
 import { Player } from "../../objects/Actors/Player.js"
 import { Coin } from "../../objects/Interactive/Coin.js"
-import { addCoinTouchedEventReciever } from "../EventController/EventController.js"
+import { addCoinTouchedEventReceiver, addEnemyDeathReceiver } from "../EventController/EventController.js"
 import { UIController } from "../../ui/UIController.js"
+import { Enemy } from "../../objects/Actors/Enemy.js"
 
 export class SceneController {
   constructor(
@@ -20,6 +21,7 @@ export class SceneController {
     this.solidObjects = []
     this.actors = []
     this.interactives = []
+    this.enemies = []
     this.collectedCoins = 0
 
     this.goalReached = false
@@ -42,9 +44,13 @@ export class SceneController {
       screenH
     )
 
-    addCoinTouchedEventReciever((id) => {
+    addCoinTouchedEventReceiver((id) => {
       this.removeObject(id)
       this.collectedCoins++
+    })
+
+    addEnemyDeathReceiver((id) => {
+      this.removeObject(id)
     })
 
     this.ui = new UIController()
@@ -67,6 +73,7 @@ export class SceneController {
     this.solidObjects = this.getSolidObjects(this.objects)
     this.actors = this.getActorObjects(this.objects)
     this.interactives = this.getInteractiveObjects(this.objects)
+    this.enemies = this.getEnemyObjects(this.objects)
   }
 
   getPlayerObject(objects) {
@@ -83,6 +90,10 @@ export class SceneController {
 
   getInteractiveObjects(objects) {
     return objects.filter(obj => obj.types.includes(TYPE_INTERACTIVE))
+  }
+
+  getEnemyObjects(objects) {
+    return objects.filter(obj => obj.types.includes(TYPE_ENEMY))
   }
 
   removeObject(id) {
@@ -119,6 +130,13 @@ export class SceneController {
             this.objects.push(new Coin(
               x * TILE_SIZE,
               y * TILE_SIZE,
+            ))
+            break
+          case "E":
+            this.objects.push(new Enemy(
+              x * TILE_SIZE,
+              y * TILE_SIZE,
+              1,
             ))
             break
         }

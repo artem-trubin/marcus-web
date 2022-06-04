@@ -8,8 +8,8 @@ export class GameObject {
     ) {
         this.x = x
         this.y = y
-        this.w = h
-        this.h = w
+        this.w = w
+        this.h = h
         this.color = color
         this.types = []
         this.id = generateId()

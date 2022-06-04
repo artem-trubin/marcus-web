@@ -1,16 +1,16 @@
-import { TYPE_ACTOR } from '../../globals.js'
+import { TYPE_ACTOR, TYPE_PLAYER } from '../../globals.js'
 import { colliding } from '../../utils.js'
 import { GameObject } from '../GameObject.js'
-import { triggerEventCoinTouched } from '../../controllers/EventController/EventController.js'
+import { triggerEnemyDeath, triggerEventCoinTouched, triggerEventPlayerDamage } from '../../controllers/EventController/EventController.js'
 
 export class Actor extends GameObject {
     constructor(
         x, y,
-        height, width,
+        width, height,
         color,
         xMaxSpeed, yMaxSpeed,
     ) {
-        super(x, y, height, width, color)
+        super(x, y, width, height, color)
 
         this.xMaxSpeed = xMaxSpeed
         this.yMaxSpeed = yMaxSpeed
@@ -55,6 +55,11 @@ export class Actor extends GameObject {
 
         this.y += this.ySpeed
 
+        if (this.types.includes(TYPE_PLAYER)) {
+            collidingObjects = scene.enemies.filter(obj => colliding(this, obj))
+            collidingObjects.forEach(obj => triggerEventPlayerDamage())
+        }
+
         collidingObjects = scene.solidObjects.filter(obj => colliding(this, obj))
         collidingObjects.forEach(obj => {
             if (this.ySpeed > 0 && this.bottom > obj.top) {
@@ -66,5 +71,13 @@ export class Actor extends GameObject {
                 this.top = obj.bottom
             }
         })
+        if (this.types.includes(TYPE_PLAYER)) {
+            collidingObjects = scene.enemies.filter(obj => colliding(this, obj))
+            collidingObjects.forEach(obj => {
+                if (obj.bottom > this.bottom) {
+                    triggerEnemyDeath(obj.id)
+                }
+            })
+        }
     }
 }

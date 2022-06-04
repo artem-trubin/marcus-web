@@ -1,7 +1,7 @@
 import { Actor } from "./Actor.js"
 import { actions } from "../../controls.js"
 import { TYPE_PLAYER } from "../../globals.js"
-import { event_jump } from "../../controllers/EventController/EventController.js"
+import { addEnemyDeathReceiver, addPlayerDamageReceiver, event_jump } from "../../controllers/EventController/EventController.js"
 
 export class Player extends Actor {
     constructor(x, y) {
@@ -17,6 +17,11 @@ export class Player extends Actor {
                 this.ySpeed = -25
                 this.doubleJump = false
             }
+        })
+
+        addPlayerDamageReceiver(() => { console.log("Damaged") })
+        addEnemyDeathReceiver(() => {
+            this.ySpeed = -20
         })
     }
 

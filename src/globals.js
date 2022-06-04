@@ -5,3 +5,7 @@ export const TYPE_PLAYER = "player"
 export const TYPE_ACTOR = "actor"
 export const TYPE_COIN = "coin"
 export const TYPE_INTERACTIVE = "interactive"
+export const TYPE_ENEMY = "enemy"
+
+export const DIRECTION_LEFT = -1
+export const DIRECTION_RIGHT = 1
