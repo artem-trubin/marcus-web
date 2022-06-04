@@ -1,6 +1,6 @@
-import { Immovable } from "./Immovable.js"
+import { Solid } from "./Solid.js"
 
-export class Platform extends Immovable {
+export class Platform extends Solid {
     constructor(
         x, y,
         width, height,

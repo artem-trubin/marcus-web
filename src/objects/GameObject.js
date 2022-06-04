@@ -1,6 +1,6 @@
 import { generateId } from "../../common.js"
 
-export class Drawable {
+export class GameObject {
     constructor(
         x, y,
         w, h,

@@ -1,9 +1,9 @@
 import { TYPE_ACTOR } from '../../globals.js'
 import { colliding } from '../../utils.js'
-import { Drawable } from '../Drawable.js'
+import { GameObject } from '../GameObject.js'
 import { triggerEventCoinTouched } from '../../controllers/EventController/EventController.js'
 
-export class Actor extends Drawable {
+export class Actor extends GameObject {
     constructor(
         x, y,
         height, width,
@@ -51,10 +51,7 @@ export class Actor extends Drawable {
         })
 
         collidingObjects = scene.interactives.filter(obj => colliding(this, obj))
-        collidingObjects.forEach(obj => {
-            console.log(obj.id)
-            triggerEventCoinTouched(obj.id)
-        })
+        collidingObjects.forEach(obj => triggerEventCoinTouched(obj.id))
 
         this.y += this.ySpeed
 

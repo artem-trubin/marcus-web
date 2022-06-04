@@ -1,7 +1,7 @@
 import { TYPE_PLAYER, TYPE_SOLID, TYPE_ACTOR, TYPE_INTERACTIVE } from "../../globals.js"
 import { Camera } from "./Camera.js"
 import { TILE_SIZE } from "../../projectsSettings.js"
-import { Platform } from "../../objects/Immovable/Platform.js"
+import { Platform } from "../../objects/Solid/Platform.js"
 import { Player } from "../../objects/Actors/Player.js"
 import { Coin } from "../../objects/Interactive/Coin.js"
 import { addCoinTouchedEventReciever } from "../EventController/EventController.js"

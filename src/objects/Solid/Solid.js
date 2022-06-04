@@ -1,7 +1,7 @@
 import { TYPE_SOLID } from "../../globals.js"
-import { Drawable } from "../Drawable.js"
+import { GameObject } from "../GameObject.js"
 
-export class Immovable extends Drawable {
+export class Solid extends GameObject {
     constructor(
         x, y,
         width, height,
