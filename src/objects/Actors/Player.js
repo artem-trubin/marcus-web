@@ -35,7 +35,7 @@ export class Player extends Actor {
         })
     }
 
-    update(scene) {
+    update(scene, delta) {
         if (actions.moveLeft) {
             this.xSpeed -= 1
             this.xDirection = -1
@@ -55,6 +55,6 @@ export class Player extends Actor {
 
         if (!this.airborne) this.doubleJump = true
 
-        super.update(scene)
+        super.update(scene, delta)
     }
 }

@@ -15,10 +15,16 @@ export class GameController {
     this.sceneController = new SceneController(this, testLvl)
 
     initiateControlEventListeners()
+
+    this.timeStamp = performance.now()
   }
 
   rerender() {
-    this.sceneController.update()
+    const now = performance.now()
+    const delta = now - this.timeStamp
+    this.timeStamp = now
+
+    this.sceneController.update(delta)
     this.sceneController.draw(this)
 
     if (this.animationGoing)

@@ -62,8 +62,8 @@ export class SceneController {
     this.ui = new UIController()
   }
 
-  update() {
-    this.actors.forEach(obj => obj.update(this))
+  update(delta) {
+    this.actors.forEach(obj => obj.update(this, delta))
     this.camera.moveCenter(this.player.centerX, this.player.centerY)
   }
 

@@ -23,7 +23,8 @@ export class Actor extends GameObject {
         this.types.push(TYPE_ACTOR)
     }
 
-    update(scene) {
+    update(scene, delta) {
+        const timeCompensation = delta / 1000
         let collidingObjects = []
 
         if (Math.abs(this.xSpeed) > this.xMaxSpeed) {
@@ -38,7 +39,7 @@ export class Actor extends GameObject {
             this.ySpeed = this.yMaxSpeed
         }
 
-        this.x += this.xSpeed
+        this.x += this.xSpeed * timeCompensation
 
         if (this.types.includes(TYPE_RIGID)) {
             collidingObjects = scene.solidObjects.filter(obj => colliding(this, obj))
@@ -63,7 +64,7 @@ export class Actor extends GameObject {
                 triggerEventCoinTouched(obj.id)
         })
 
-        this.y += this.ySpeed
+        this.y += this.ySpeed * timeCompensation
 
         if (this.types.includes(TYPE_PLAYER)) {
             collidingObjects = scene.enemies.filter(obj => colliding(this, obj))

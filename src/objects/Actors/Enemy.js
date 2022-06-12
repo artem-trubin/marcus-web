@@ -12,9 +12,9 @@ export class Enemy extends Actor {
     this.types.push(TYPE_RIGID)
   }
 
-  update(scene) {
+  update(scene, delta) {
     this.xSpeed = this.speed * this.direction
-    super.update(scene)
+    super.update(scene, delta)
     if (this.xSpeed === 0) this.direction *= -1
   }
 }
