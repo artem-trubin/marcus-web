@@ -27,6 +27,29 @@ export class Camera {
       top: this.lvlBoundaries.top + this.yOffset,
       bottom: this.lvlBoundaries.bottom - this.yOffset,
     }
+
+    this.additionalOffsetX = 0
+    this.additionalOffsetY = 0
+
+    window.addEventListener("keydown", ({ code }) => {
+      switch (code) {
+        case "Numpad4":
+          this.additionalOffsetX -= 3
+          break
+        case "Numpad6":
+          this.additionalOffsetX += 3
+          break
+        case "Numpad8":
+          this.additionalOffsetY -= 3
+          break
+        case "Numpad2":
+          this.additionalOffsetY += 3
+          break
+        case "Numpad5":
+          this.additionalOffsetX = 0
+          this.additionalOffsetY = 0
+      }
+    })
   }
 
   moveCenter(newCenterX, newCenterY) {

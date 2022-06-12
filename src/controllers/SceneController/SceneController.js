@@ -7,13 +7,12 @@ import { Coin } from "../../objects/Interactive/Coin.js"
 import { addCoinTouchedEventReceiver, addDestroyProjectileReceiver, addEnemyDeathReceiver } from "../EventController/EventController.js"
 import { UIController } from "../../ui/UIController.js"
 import { Enemy } from "../../objects/Actors/Enemy.js"
-import { Projectile } from "../../objects/Projectiles/Projectile.js"
+import { stretchAndFillCanvas } from "../../canvas.js"
 
 export class SceneController {
   constructor(
+    gameController,
     lvlSchema,
-    screenW,
-    screenH,
   ) {
     this.lvlSchema = lvlSchema
 
@@ -41,8 +40,8 @@ export class SceneController {
       this.lvlBoundaries.right,
       this.lvlBoundaries.top,
       this.lvlBoundaries.bottom,
-      screenW,
-      screenH
+      gameController.screenWidth,
+      gameController.screenHeight,
     )
 
     addCoinTouchedEventReceiver((id) => {
@@ -61,11 +60,14 @@ export class SceneController {
     this.ui = new UIController()
   }
 
-  winConditionCheck() {
-    if (this.interactives.length === 0 && !this.goalReached) {
-      this.goalReached = true
-      alert("You've collected all coins! Well done!")
-    }
+  update() {
+    this.actors.forEach(obj => obj.update(this))
+    this.camera.moveCenter(this.player.centerX, this.player.centerY)
+  }
+
+  draw(game) {
+    stretchAndFillCanvas(game)
+    this.objects.forEach(obj => obj.draw(game.ctx, this.camera))
   }
 
   buildLvl() {

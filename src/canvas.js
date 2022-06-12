@@ -1,20 +1,10 @@
-import { SCREEN_SIZE } from "./globals.js"
 import { defaultBackgroundColor } from "./projectsSettings.js"
 
-export const canvas = document.querySelector('canvas')
-export const ctx = canvas.getContext('2d')
-ctx.webkitImageSmoothingEnabled = false;
-ctx.mozImageSmoothingEnabled = false;
-ctx.imageSmoothingEnabled = false;
-
-export function stretchAndFillCanvas(canvas, ctx) {
-    const width = SCREEN_SIZE.w
-    const height = SCREEN_SIZE.h
-
-    canvas.width = width
-    canvas.height = height
+export function stretchAndFillCanvas({ canvas, ctx, screenWidth, screenHeight }) {
+    canvas.width = screenWidth
+    canvas.height = screenHeight
     ctx.fillStyle = defaultBackgroundColor
-    ctx.fillRect(0, 0, width, height)
+    ctx.fillRect(0, 0, screenWidth, screenHeight)
 }
 
 export function initiateResizeEventListener() {
@@ -22,4 +12,18 @@ export function initiateResizeEventListener() {
         SCREEN_SIZE.w = target.innerWidth
         SCREEN_SIZE.h = target.innerHeight
     })
+}
+
+export function getCanvas() {
+    return document.querySelector('canvas')
+}
+
+export function initiateContext() {
+    const canvas = getCanvas()
+    const ctx = canvas.getContext('2d')
+    ctx.webkitImageSmoothingEnabled = false
+    ctx.mozImageSmoothingEnabled = false
+    ctx.imageSmoothingEnabled = false
+
+    return ctx
 }

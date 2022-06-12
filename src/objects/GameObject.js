@@ -39,6 +39,6 @@ export class GameObject {
 
     draw(ctx, camera) {
         ctx.fillStyle = this.color
-        ctx.fillRect(this.x - camera.x, this.y - camera.y, this.w, this.h)
+        ctx.fillRect(this.x - camera.x - camera.additionalOffsetX, this.y - camera.y - camera.additionalOffsetY, this.w, this.h)
     }
 }
