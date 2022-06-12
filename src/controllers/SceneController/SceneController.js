@@ -8,6 +8,8 @@ import { addCoinTouchedEventReceiver, addDestroyProjectileReceiver, addEnemyDeat
 import { UIController } from "../../ui/UIController.js"
 import { Enemy } from "../../objects/Actors/Enemy.js"
 import { stretchAndFillCanvas } from "../../canvas.js"
+import { Fire } from "../../objects/Interactives/PowerUps/Fire.js"
+import { Wind } from "../../objects/Interactives/PowerUps/Wind.js"
 
 export class SceneController {
   constructor(
@@ -150,6 +152,18 @@ export class SceneController {
               x * TILE_SIZE,
               y * TILE_SIZE,
               1,
+            ))
+            break
+          case "F":
+            this.objects.push(new Fire(
+              x * TILE_SIZE,
+              y * TILE_SIZE,
+            ))
+            break
+          case "W":
+            this.objects.push(new Wind(
+              x * TILE_SIZE,
+              y * TILE_SIZE,
             ))
             break
         }
